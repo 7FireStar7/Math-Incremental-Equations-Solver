@@ -5,3 +5,4 @@ PyQt6
 pyautogui
 keyboard
 pywin32
+mss
