@@ -1,0 +1,27 @@
+делаешь сначала git clone моего репозитория.
+
+Открываешь эту папку в VSCode.
+
+Используя внутренний терминал:
+# 1. Создаем виртуальное окружение
+python -m venv venv
+
+# 2. Активируем его
+# Для Windows:
+venv\Scripts\activate
+
+# 3. Устанавливаем зависимости
+pip install -r requirements.txt
+
+# 4. Устанавливаем упаковщик
+pip install pyinstaller
+
+
+pip uninstall torch torchvision torchaudio
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126 
+если сломалась обработка по GPU
+
+pyinstaller --noconfirm --onedir --windowed --hidden-import="torch" --hidden-import="easyocr" --add-data "gui;gui" --add-data "core;core" --add-data "utils;utils" main.py
+
+pyinstaller --noconfirm --onedir --windowed --name "Math Incremental Equations Solver v0.8" --icon "app_icon.ico" --add-data "gui;gui" --add-data "core;core" --add-data "utils;utils" --hidden-import "torch" --hidden-import "easyocr" --collect-all "easyocr" --collect-all "torch" main.py
+сама сборка
