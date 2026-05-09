@@ -8,7 +8,7 @@ from gui.workers import SolverWorker
 from utils.config_manager import load_config, save_config
 from utils.hotkeys import setup_global_hotkeys
 
-# --- ГЛОБАЛЬНЫЙ СТИЛЬ ---
+# --- ГЛОБАЛЬНЫЙ СТИЛЬ ОСТАВЛЕН БЕЗ ИЗМЕНЕНИЙ ---
 STYLE = """
 QMainWindow { background-color: #0d0d12; }
 QLabel { color: #e0e0e0; font-family: 'Segoe UI', sans-serif; font-size: 11pt; }
@@ -58,9 +58,7 @@ QLabel#solvedCount { color: #00e5ff; }
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        # ОБНОВЛЕННОЕ НАЗВАНИЕ И ВЕРСИЯ
         self.setWindowTitle("Math Incremental Equations Solver v0.8")
-        # УМЕНЬШЕННАЯ ВЫСОТА ОКНА
         self.setFixedSize(500, 620)
         self.config = load_config()
         self.worker = None
@@ -75,10 +73,9 @@ class MainWindow(QMainWindow):
         central = QWidget()
         self.setCentralWidget(central)
         self.layout = QVBoxLayout(central)
-        self.layout.setContentsMargins(40, 30, 40, 20) # Уменьшил отступы для компактности
+        self.layout.setContentsMargins(40, 30, 40, 20)
         self.layout.setSpacing(15)
 
-        # Header
         header_row = QHBoxLayout()
         sig_logo = QLabel("Σ")
         sig_logo.setStyleSheet("color: #00e5ff; font-size: 22pt; font-weight: 900;")
@@ -89,10 +86,9 @@ class MainWindow(QMainWindow):
         header_row.addStretch()
         self.layout.addLayout(header_row)
 
-        # Info Card
         self.card = QFrame()
         self.card.setObjectName("infoCard")
-        self.card.setFixedHeight(180) # Немного ужал карточку
+        self.card.setFixedHeight(180)
         card_layout = QVBoxLayout(self.card)
 
         self.status_lbl = QLabel("Status: Ready")
@@ -115,11 +111,8 @@ class MainWindow(QMainWindow):
         card_layout.addWidget(self.count_lbl)
         
         self.layout.addWidget(self.card)
-        
-        # Убрал большой Stretch, оставил маленький зазор
         self.layout.addSpacing(10)
 
-        # Buttons
         self.btn_area = QPushButton("SELECT AREA")
         self.btn_area.setObjectName("selectAreaBtn")
         self.btn_area.setFixedHeight(60)
@@ -167,10 +160,12 @@ class MainWindow(QMainWindow):
             self.worker.moveToThread(self.thread)
             self.thread.started.connect(self.worker.run)
             self.worker.stats_signal.connect(self.update_ui)
+            # --- ПОДКЛЮЧЕНИЕ СИГНАЛА СТАТУСА ---
+            self.worker.status_signal.connect(self.status_lbl.setText)
             self.thread.start()
             self.btn_start.setEnabled(False)
             self.btn_stop.setEnabled(True)
-            self.status_lbl.setText("Status: Active")
+            # Статус теперь обновляется воркером
 
     @pyqtSlot()
     def on_stop(self):
